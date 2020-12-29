@@ -6110,12 +6110,14 @@ for cmd in pedacmd.commands:
         Alias(cmd, "peda %s" % cmd, 0)
 
 # handle SIGINT / Ctrl-C
-def sigint_handler(signal, frame):
-    warning_msg("Got Ctrl+C / SIGINT!")
+def sigint_handler(event):
+# def sigint_handler(signal, frame):
+    # warning_msg("Got Ctrl+C / SIGINT!")
     gdb.execute("set logging off")
     peda.restore_user_command("all")
-    raise KeyboardInterrupt
-signal.signal(signal.SIGINT, sigint_handler)
+    # raise KeyboardInterrupt
+# signal.signal(signal.SIGINT, sigint_handler)
+gdb.events.stop.connect(sigint_handler)
 
 # custom hooks
 peda.define_user_command("hook-stop",
